@@ -53,6 +53,14 @@
         -webkit-backface-visibility: hidden;
         backface-visibility: hidden;
     }
+    /* The tabs remain available while their menu section is being read. */
+    #menu-tabs{
+        position: sticky;
+        top: var(--menu-tabs-top, calc(80px + env(safe-area-inset-top, 0px)));
+        z-index: 40;
+        background: #252623;
+        padding-top: 12px;
+    }
     /* Anton/Lalezar have no Persian glyphs (Lalezar covers Arabic script only, not Latin),
        so headings fall back to IBM Plex Sans Arabic for Persian text — but only the
        family falls back by default, not the weight. Force the intended weight per
@@ -170,7 +178,7 @@
 </section>
 
 <!-- Interactive Menu Section -->
-<section class="py-20 bg-tertiary text-on-tertiary overflow-hidden pt-20" id="menu">
+<section class="py-20 bg-tertiary text-on-tertiary pt-20" id="menu">
 <div class="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop">
 <div class="text-center mb-16">
 <span class="text-[#C9A24B] font-label-caps text-label-caps">FUEL FOR THE FANS</span>
@@ -698,10 +706,33 @@ function filterMenu(category, btn){
         container.style.opacity = '1';
         container.style.transform = 'translateY(0)';
     }, 220);
+
+    scrollToMenuItems();
+}
+
+function syncMenuTabsOffset(){
+    const header = document.querySelector('header');
+    if (header){
+        document.documentElement.style.setProperty('--menu-tabs-top', `${header.getBoundingClientRect().height}px`);
+    }
+}
+
+function scrollToMenuItems(){
+    const header = document.querySelector('header');
+    const tabs = document.getElementById('menu-tabs');
+    const container = document.getElementById('menu-container');
+    const headerHeight = header ? header.getBoundingClientRect().height : 0;
+    const tabsHeight = tabs ? tabs.getBoundingClientRect().height : 0;
+    const target = container.getBoundingClientRect().top + window.scrollY - headerHeight - tabsHeight - 16;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    window.scrollTo({ top: Math.max(0, target), behavior: reduceMotion ? 'auto' : 'smooth' });
 }
 
 // init
 renderMenuItems('pizza');
+syncMenuTabsOffset();
+window.addEventListener('resize', syncMenuTabsOffset);
 
 // Simple scroll spy for nav background
 window.addEventListener('scroll', () => {
@@ -713,6 +744,7 @@ window.addEventListener('scroll', () => {
         header.classList.add('py-stack-md');
         header.classList.remove('py-stack-sm', 'shadow-xl');
     }
+    syncMenuTabsOffset();
 });
 </script>
 </body>
