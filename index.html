@@ -2,7 +2,7 @@
 <html dir="rtl" lang="fa">
 <head>
 <meta charset="utf-8">
-<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport">
 <title>کافه فست فود یازده | ELEVEN</title>
 <meta name="description" content="کافه فست فود یازده - بهترین زاویه دید برای تماشای هر گل. پیتزا، برگر، پاستا، باکس‌های گروهی و نوشیدنی‌ها.">
 <link rel="stylesheet" href="assets/fonts.css">
@@ -10,7 +10,8 @@
 <style>
     html{
         scroll-behavior: smooth;
-        scroll-padding-top: 96px;
+        scroll-padding-top: calc(96px + env(safe-area-inset-top, 0px));
+        background: #252623;
     }
     @media (prefers-reduced-motion: reduce){
         html{ scroll-behavior: auto; }
@@ -38,6 +39,20 @@
     ::-webkit-scrollbar{ height:6px; width:6px; }
     ::-webkit-scrollbar-thumb{ background:#C9A24B; border-radius:9999px; }
     body{ font-family:'Work Sans','IBM Plex Sans Arabic',sans-serif; }
+    /* Keep the fixed navigation flush with the iOS visual viewport.  The safe-area
+       fill also prevents Safari's top-edge compositing seam from exposing the page. */
+    .site-header{
+        top: 0;
+        right: 0;
+        left: 0;
+        width: 100%;
+        margin: 0;
+        padding-top: env(safe-area-inset-top, 0px);
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+    }
     /* Anton/Lalezar have no Persian glyphs (Lalezar covers Arabic script only, not Latin),
        so headings fall back to IBM Plex Sans Arabic for Persian text — but only the
        family falls back by default, not the weight. Force the intended weight per
@@ -63,7 +78,7 @@
 <body class="bg-background text-on-background">
 
 <!-- Top Navigation Bar -->
-<header class="fixed top-0 w-full z-50 bg-tertiary/95 backdrop-blur-md border-b border-[#C9A24B]/20 transition-all duration-300">
+<header class="site-header fixed top-0 w-full z-50 bg-tertiary/95 backdrop-blur-md border-b border-[#C9A24B]/20 transition-all duration-300">
 <nav class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-stack-sm md:py-stack-md max-w-[1280px] mx-auto">
 <a href="#hero" class="flex items-center gap-stack-sm md:gap-stack-md">
 <span class="flex items-center justify-center bg-white rounded-[50%] p-2 shadow-md flex-shrink-0">
