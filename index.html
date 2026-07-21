@@ -2,7 +2,7 @@
 <html dir="rtl" lang="fa">
 <head>
 <meta charset="utf-8">
-<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
 <title>کافه فست فود یازده | ELEVEN</title>
 <meta name="description" content="کافه فست فود یازده - بهترین زاویه دید برای تماشای هر گل. پیتزا، برگر، پاستا، باکس‌های گروهی و نوشیدنی‌ها.">
 <link rel="stylesheet" href="assets/fonts.css">
@@ -47,7 +47,6 @@
         left: 0;
         width: 100%;
         margin: 0;
-        padding-top: env(safe-area-inset-top, 0px);
         -webkit-transform: translateZ(0);
         transform: translateZ(0);
         -webkit-backface-visibility: hidden;
@@ -60,7 +59,16 @@
         z-index: 40;
         background: #252623;
         padding-top: 12px;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        overflow-x: auto;
+        overscroll-behavior-x: contain;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
     }
+    #menu-tabs::-webkit-scrollbar{ display: none; }
+    #menu-tabs .menu-tab{ flex: 0 0 auto; white-space: nowrap; }
+    .menu-item-photo:not(:has(img)){ display: none; }
     /* Anton/Lalezar have no Persian glyphs (Lalezar covers Arabic script only, not Latin),
        so headings fall back to IBM Plex Sans Arabic for Persian text — but only the
        family falls back by default, not the weight. Force the intended weight per
@@ -87,7 +95,7 @@
 
 <!-- Top Navigation Bar -->
 <header class="site-header fixed top-0 w-full z-50 bg-tertiary/95 backdrop-blur-md border-b border-[#C9A24B]/20 transition-all duration-300">
-<nav class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-stack-sm md:py-stack-md max-w-[1280px] mx-auto">
+<nav class="site-nav flex justify-between items-center px-margin-mobile md:px-margin-desktop py-stack-sm md:py-stack-md max-w-[1280px] mx-auto">
 <a href="#hero" class="flex items-center gap-stack-sm md:gap-stack-md">
 <span class="flex items-center justify-center bg-white rounded-[50%] p-2 shadow-md flex-shrink-0">
     <img src="assets/logo.png" alt="لوگوی کافه یازده" class="h-12 md:h-14 w-auto">
@@ -737,12 +745,14 @@ window.addEventListener('resize', syncMenuTabsOffset);
 // Simple scroll spy for nav background
 window.addEventListener('scroll', () => {
     const header = document.querySelector('header');
+    const nav = header.querySelector('.site-nav');
     if (window.scrollY > 50){
-        header.classList.add('py-stack-sm', 'shadow-xl');
-        header.classList.remove('py-stack-md');
+        nav.classList.add('py-stack-sm');
+        nav.classList.remove('md:py-stack-md');
+        header.classList.add('shadow-xl');
     } else {
-        header.classList.add('py-stack-md');
-        header.classList.remove('py-stack-sm', 'shadow-xl');
+        nav.classList.add('md:py-stack-md');
+        header.classList.remove('shadow-xl');
     }
     syncMenuTabsOffset();
 });
