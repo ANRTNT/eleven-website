@@ -290,11 +290,11 @@
 <div class="grid grid-cols-2 gap-4 mt-4">
 <div>
 <span class="block text-on-surface-variant font-body-md">شنبه تا چهارشنبه</span>
-<span class="font-bold">10:00 - 23:30</span>
+<span class="font-bold">۱۰:۰۰ - ۲۳:۳۰</span>
 </div>
 <div>
 <span class="block text-on-surface-variant font-body-md">پنجشنبه و جمعه</span>
-<span class="font-bold">09:00 - 01:00</span>
+<span class="font-bold">۰۹:۰۰ - ۰۱:۰۰</span>
 </div>
 </div>
 </div>
@@ -313,7 +313,7 @@
 <div class="h-[400px] bg-white border border-outline-variant rounded-xl overflow-hidden stadium-shadow group cursor-pointer relative" onclick="window.open('https://nshn.ir/3c_bfkSf2FOVdN', '_blank')">
 <iframe class="w-full h-full pointer-events-none" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://neshan.org/maps/iframe/places/3ccba31eb298aaa0e9927a8f0dceb1f0#c36.558-53.074-18z-0p/36.55755400195055/53.07291448144613"></iframe>
 <div class="absolute inset-0 bg-primary/0 group-hover:bg-primary/10 transition-colors flex items-end justify-center pb-6">
-<span class="bg-primary text-white px-4 py-2 text-sm font-label-caps opacity-0 group-hover:opacity-100 transition-opacity">باز کردن در نشان</span>
+<span class="bg-primary text-white px-4 py-2 text-sm font-label-caps opacity-0 group-hover:opacity-100 transition-opacity">باز کردن در Google Maps</span>
 </div>
 </div>
 <p class="text-xs text-on-surface-variant/70 font-body-md mt-2">نمایش نقشه نیاز به اتصال اینترنت دارد؛ آدرس بالا همیشه در دسترس است.</p>
@@ -726,12 +726,12 @@ function syncMenuTabsOffset(){
 }
 
 function scrollToMenuItems(){
-    const header = document.querySelector('header');
     const tabs = document.getElementById('menu-tabs');
     const container = document.getElementById('menu-container');
-    const headerHeight = header ? header.getBoundingClientRect().height : 0;
-    const tabsHeight = tabs ? tabs.getBoundingClientRect().height : 0;
-    const target = container.getBoundingClientRect().top + window.scrollY - headerHeight - tabsHeight - 16;
+    // Measure the tabs' visible bottom edge so the first card never lands beneath
+    // the sticky strip (including in iOS/Telegram's changing visual viewport).
+    const visibleTop = tabs ? tabs.getBoundingClientRect().bottom + 16 : 16;
+    const target = container.getBoundingClientRect().top + window.scrollY - visibleTop;
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     window.scrollTo({ top: Math.max(0, target), behavior: reduceMotion ? 'auto' : 'smooth' });
